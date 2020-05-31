@@ -137,7 +137,7 @@ variable "autoscaling_scale_down_cooldown" {
 
 variable "lb_security_group_ids" {
   description = "A list of security group IDs to assign to the LB."
-  type        = string
+  type        = list(string)
 }
 
 variable "lb_health_check_enabled" {
