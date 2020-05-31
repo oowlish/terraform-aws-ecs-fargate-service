@@ -17,7 +17,7 @@ resource "aws_ecs_service" "this" {
 
 
   load_balancer {
-    target_group_arn = aws_alb_target_group.http.arn
+    target_group_arn = aws_lb_target_group.http.arn
     container_name   = var.ecs_service_container_name
     container_port   = var.ecs_service_container_port
   }

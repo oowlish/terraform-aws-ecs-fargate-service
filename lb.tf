@@ -50,7 +50,7 @@ resource "aws_lb_listener" "http" {
   protocol = aws_lb_target_group.http.protocol
 
   default_action {
-    target_group_arn = aws_alb_target_group.http.arn
+    target_group_arn = aws_lb_target_group.http.arn
     type             = "forward"
   }
 
