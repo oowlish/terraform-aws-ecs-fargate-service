@@ -7,7 +7,7 @@ resource "aws_lb" "this" {
   subnets         = var.public_subnet_ids
   security_groups = var.lb_security_group_ids
 
-  tags = var.tags
+  tags = local.tags
 
   lifecycle {
     create_before_destroy = true
@@ -18,7 +18,7 @@ resource "aws_lb_target_group" "http" {
   name = "${local.name_prefix}-http-tg"
 
   vpc_id      = var.vpc_id
-  port        = var.target_group_port
+  port        = var.ecs_service_container_port
   target_type = "ip"
   protocol    = "HTTP"
 
@@ -34,7 +34,7 @@ resource "aws_lb_target_group" "http" {
     matcher             = var.target_group_health_check_matcher
   }
 
-  tags = var.tags
+  tags = local.tags
 
   lifecycle {
     create_before_destroy = true

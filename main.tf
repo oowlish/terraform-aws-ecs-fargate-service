@@ -3,12 +3,11 @@ terraform {
 }
 
 locals {
-  name_prefix = ""
-}
+  name_prefix = "${var.name}-${var.environment_short}"
 
-
-data "aws_caller_identity" "current" {}
-
-data "aws_ecs_cluster" "this" {
-  cluster_name = var.cluster_name
+  tags = {
+    Application = var.name
+    Environment = var.environment
+    Terraform   = "yes"
+  }
 }

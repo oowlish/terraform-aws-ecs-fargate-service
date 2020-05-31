@@ -1,1 +1,1 @@
-# Terraform AWS ECS Service
+# Terraform AWS Fargate Service
