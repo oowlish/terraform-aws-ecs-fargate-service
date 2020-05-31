@@ -40,7 +40,7 @@ resource "aws_lb_target_group" "http" {
     create_before_destroy = true
   }
 
-  depends_on = [aws_alb.this]
+  depends_on = [aws_lb.this]
 }
 
 resource "aws_lb_listener" "http" {
