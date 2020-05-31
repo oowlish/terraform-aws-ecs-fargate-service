@@ -30,6 +30,11 @@ variable "private_subnet_ids" {
   type        = list(string)
 }
 
+variable "ecs_cluster_name" {
+  description = "Name of an ECS cluster."
+  type        = string
+}
+
 variable "ecs_service_task_definition_arn" {
   description = "The family and revision (family:revision) or full ARN of the task definition that you want to run in your service."
   type        = string
