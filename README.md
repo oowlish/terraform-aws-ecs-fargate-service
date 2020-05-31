@@ -17,7 +17,7 @@ resource "aws_ecs_task_definition" "this" {
 
 module "ecs_fargate_service" {
   source  = "app.terraform.io/oowlish/ecs-fargate-service/aws"
-  version = "0.1.0"
+  version = "~> 0.1"
 
   name = "wordpress"
 
