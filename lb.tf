@@ -44,7 +44,7 @@ resource "aws_lb_target_group" "http" {
 }
 
 resource "aws_lb_listener" "http" {
-  load_balancer_arn = aws_alb.this.arn
+  load_balancer_arn = aws_lb.this.arn
 
   port     = aws_lb_target_group.http.port
   protocol = aws_lb_target_group.http.protocol
