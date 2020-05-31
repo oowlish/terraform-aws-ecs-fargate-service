@@ -1,5 +1,5 @@
 resource "aws_lb" "this" {
-  name = local.name_preffix
+  name = local.name_prefix
 
   internal           = false
   load_balancer_type = "application"
