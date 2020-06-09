@@ -1,6 +1,6 @@
 # Terraform AWS ECS Fargate Service
 
-![Diagram](diagram.png)
+![AWS ECS Fargate Service Diagram](https://raw.githubusercontent.com/oowlish/terraform-aws-ecs-fargate-service/master/diagram.png)
 
 ## Usage
 
