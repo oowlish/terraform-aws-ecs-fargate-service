@@ -1,13 +1,25 @@
+resource "random_pet" "lb_target_group_http_name" {}
+
+module "this_lb_http_sg" {
+  source  = "terraform-aws-modules/security-group/aws//modules/http-80"
+  version = "~> 3.0"
+
+  name = format("%s-%s", var.name, var.stage)
+  vpc_id = var.vpc_id
+
+  tags = var.tags
+}
+
 resource "aws_lb" "this" {
-  name = local.name_prefix
+  name = format("%s-%s", var.name, var.stage)
 
   internal           = false
   load_balancer_type = "application"
 
   subnets         = var.public_subnet_ids
-  security_groups = var.lb_security_group_ids
+  security_groups = [module.this_lb_http_sg.this_security_group_id]
 
-  tags = local.tags
+  tags = var.tags
 
   lifecycle {
     create_before_destroy = true
@@ -15,13 +27,12 @@ resource "aws_lb" "this" {
 }
 
 resource "aws_lb_target_group" "http" {
-  name = "${local.name_prefix}-http-tg"
+  name = format("%s-http", random_pet.lb_target_group_http_name.id)
 
   vpc_id      = var.vpc_id
-  port        = var.ecs_service_container_port
+  port        = var.ecs_container_port
   target_type = "ip"
   protocol    = "HTTP"
-
 
   health_check {
     enabled             = var.lb_health_check_enabled
@@ -34,7 +45,7 @@ resource "aws_lb_target_group" "http" {
     matcher             = var.lb_health_check_matcher
   }
 
-  tags = local.tags
+  tags = var.tags
 
   lifecycle {
     create_before_destroy = true
