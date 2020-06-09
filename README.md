@@ -1,5 +1,7 @@
 # Terraform AWS ECS Fargate Service
 
+![Diagram](diagram.png)
+
 ## Usage
 
 ```tf
