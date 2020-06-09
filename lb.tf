@@ -7,7 +7,7 @@ module "this_lb_http_sg" {
   name = format("%s-%s", var.name, var.stage)
   vpc_id = var.vpc_id
 
-  cidr_blocks = ["0.0.0.0/0"]
+  ingress_cidr_blocks = ["0.0.0.0/0"]
 
   tags = var.tags
 }
