@@ -3,7 +3,8 @@ data "aws_ecs_cluster" "this" {
 }
 
 resource "random_string" "ecs_service_this_name" {
-  length  = 5
+  length  = 8
+  special = false
 }
 
 resource "aws_ecs_service" "this" {
