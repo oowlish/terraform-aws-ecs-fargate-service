@@ -4,7 +4,7 @@ module "this_lb_http_sg" {
   source  = "terraform-aws-modules/security-group/aws//modules/http-80"
   version = "~> 3.0"
 
-  name = format("%s-%s", var.name, var.stage)
+  name   = format("%s-%s", var.name, var.stage)
   vpc_id = var.vpc_id
 
   ingress_cidr_blocks = ["0.0.0.0/0"]
@@ -28,8 +28,8 @@ resource "aws_lb" "this" {
   }
 }
 
-resource "aws_lb_target_group" "http" {
-  name = format("%s-http", random_pet.lb_target_group_http_name.id)
+resource "aws_lb_target_group" "http_ip" {
+  name = format("%s-http-ip", random_pet.lb_target_group_http_name.id)
 
   vpc_id      = var.vpc_id
   port        = var.ecs_container_port
@@ -59,11 +59,32 @@ resource "aws_lb_target_group" "http" {
 resource "aws_lb_listener" "http" {
   load_balancer_arn = aws_lb.this.arn
 
-  port     = aws_lb_target_group.http.port
-  protocol = aws_lb_target_group.http.protocol
+  port     = 80
+  protocol = "HTTP"
 
   default_action {
-    target_group_arn = aws_lb_target_group.http.arn
+    target_group_arn = aws_lb_target_group.http_ip.arn
+    type             = "forward"
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_lb_listener" "https" {
+  count = var.lb_certificate_arn == "" ? 0 : 1
+
+  load_balancer_arn = aws_lb.this.arn
+
+  port     = 443
+  protocol = "HTTPS"
+
+  ssl_policy      = "ELBSecurityPolicy-2016-08"
+  certificate_arn = var.lb_certificate_arn
+
+  default_action {
+    target_group_arn = aws_lb_target_group.http_ip.arn
     type             = "forward"
   }
 
