@@ -15,8 +15,9 @@ resource "aws_ecs_service" "this" {
   task_definition = var.ecs_task_definition_arn
   desired_count   = var.ecs_desired_count
 
-  launch_type    = "FARGATE"
-  propagate_tags = "SERVICE"
+  platform_version = var.fargate_platform_version
+  launch_type      = "FARGATE"
+  propagate_tags   = "SERVICE"
 
   enable_ecs_managed_tags = true
 
@@ -39,6 +40,7 @@ resource "aws_ecs_service" "this" {
   tags = var.tags
 
   lifecycle {
-    ignore_changes = [desired_count]
+    create_before_destroy = true
+    ignore_changes        = [desired_count]
   }
 }

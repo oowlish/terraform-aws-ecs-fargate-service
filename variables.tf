@@ -30,6 +30,12 @@ variable "public_subnet_ids" {
   description = "A list of public subnets."
 }
 
+variable "fargate_platform_version" {
+  type        = string
+  default     = "LATEST"
+  description = "The platform version on which to run your service."
+}
+
 variable "ecs_assign_public_ip" {
   type        = bool
   default     = false
@@ -132,6 +138,12 @@ variable "lb_certificate_arn" {
   type        = string
   default     = ""
   description = "The ARN of the default SSL server certificate."
+}
+
+variable "lb_ssl_policy" {
+  type        = string
+  default     = "ELBSecurityPolicy-2016-08"
+  description = "The name of the SSL Policy for the listener."
 }
 
 variable "appautoscaling_high_cpu_threshold" {
