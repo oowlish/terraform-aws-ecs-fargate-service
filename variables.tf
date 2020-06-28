@@ -47,6 +47,12 @@ variable "ecs_cluster_name" {
   description = "Name of an existing ECS Cluster."
 }
 
+variable "ecs_deployment_controller_type" {
+  type        = string
+  default     = "ECS"
+  description = "Type of deployment controller. Valid values: CODE_DEPLOY, ECS, EXTERNAL. Default: ECS."
+}
+
 variable "ecs_container_name" {
   type        = string
   description = "The container name value, already specified in the task definition, to be used for your service discovery service."

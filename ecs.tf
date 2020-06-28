@@ -25,6 +25,10 @@ resource "aws_ecs_service" "this" {
   deployment_minimum_healthy_percent = var.ecs_deployment_minimum_healthy_percent
   health_check_grace_period_seconds  = var.ecs_health_check_grace_period_seconds
 
+  deployment_controller {
+    type = var.ecs_deployment_controller_type
+  }
+
   load_balancer {
     target_group_arn = aws_lb_target_group.http_ip.arn
     container_name   = var.ecs_container_name
