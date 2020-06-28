@@ -44,7 +44,6 @@ resource "aws_ecs_service" "this" {
   tags = var.tags
 
   lifecycle {
-    create_before_destroy = true
-    ignore_changes        = [desired_count]
+    ignore_changes = [desired_count]
   }
 }
