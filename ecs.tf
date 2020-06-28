@@ -26,7 +26,7 @@ resource "aws_ecs_service" "this" {
   health_check_grace_period_seconds  = var.ecs_health_check_grace_period_seconds
 
   load_balancer {
-    target_group_arn = aws_lb_target_group.http.arn
+    target_group_arn = aws_lb_target_group.http_ip.arn
     container_name   = var.ecs_container_name
     container_port   = var.ecs_container_port
   }
