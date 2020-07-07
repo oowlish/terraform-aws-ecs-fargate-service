@@ -92,3 +92,10 @@ resource "aws_lb_listener" "https" {
     create_before_destroy = true
   }
 }
+
+resource "aws_lb_listener_certificate" "extra_certificates" {
+  for_each = var.lb_extra_certificates_arn
+
+  listener_arn    = aws_lb_listener.https.arn
+  certificate_arn = each.value
+}

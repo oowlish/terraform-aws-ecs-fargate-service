@@ -146,6 +146,12 @@ variable "lb_certificate_arn" {
   description = "The ARN of the default SSL server certificate."
 }
 
+variable "lb_extra_certificates_arn" {
+  type        = list(string)
+  default     = []
+  description = "List of extra SSL server certificates."
+}
+
 variable "lb_ssl_policy" {
   type        = string
   default     = "ELBSecurityPolicy-2016-08"
