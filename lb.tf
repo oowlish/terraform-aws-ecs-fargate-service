@@ -96,6 +96,6 @@ resource "aws_lb_listener" "https" {
 resource "aws_lb_listener_certificate" "extra_certificates" {
   for_each = var.lb_extra_certificates_arn
 
-  listener_arn    = aws_lb_listener.https.arn
+  listener_arn    = aws_lb_listener.https[0].arn
   certificate_arn = each.value
 }
