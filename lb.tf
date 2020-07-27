@@ -1,10 +1,8 @@
-resource "random_pet" "lb_target_group_http_name" {}
-
 module "this_lb_http_sg" {
   source  = "terraform-aws-modules/security-group/aws//modules/http-80"
-  version = "~> 3.0"
+  version = "3.13.0"
 
-  name   = format("%s-%s", var.name, var.stage)
+  name   = format("%s-lb-http", var.name)
   vpc_id = var.vpc_id
 
   ingress_cidr_blocks = ["0.0.0.0/0"]
@@ -29,7 +27,7 @@ resource "aws_lb" "this" {
 }
 
 resource "aws_lb_target_group" "http_ip" {
-  name = format("%s-http-ip", random_pet.lb_target_group_http_name.id)
+  name = format("%s-http-ip", var.name)
 
   vpc_id      = var.vpc_id
   port        = var.ecs_container_port
@@ -94,7 +92,7 @@ resource "aws_lb_listener" "https" {
 }
 
 resource "aws_lb_listener_certificate" "extra_certificates" {
-  for_each = var.lb_extra_certificates_arn
+  for_each = toset(var.lb_extra_certificates_arn)
 
   listener_arn    = aws_lb_listener.https[0].arn
   certificate_arn = each.value

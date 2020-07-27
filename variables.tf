@@ -88,11 +88,6 @@ variable "ecs_health_check_grace_period_seconds" {
   description = "Seconds to ignore failing load balancer health checks on newly instantiated tasks to prevent premature shutdown, up to 2147483647."
 }
 
-variable "ecs_security_group_ids" {
-  type        = list(string)
-  description = "A list of security groups associated with the task or service."
-}
-
 variable "ecs_task_definition_arn" {
   type        = string
   description = "The family and revision (family:revision) or full ARN of the task definition that you want to run in your service."

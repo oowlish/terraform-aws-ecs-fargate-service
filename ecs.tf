@@ -2,13 +2,28 @@ data "aws_ecs_cluster" "this" {
   cluster_name = var.ecs_cluster_name
 }
 
-resource "random_string" "ecs_service_this_name" {
-  length  = 8
-  special = false
+module "this_ecs_http_sg" {
+  source  = "terraform-aws-modules/security-group/aws"
+  version = "3.13.0"
+
+  name   = format("%s-service-http", var.name)
+  vpc_id = var.vpc_id
+
+  egress_rules = ["all-all"]
+
+  computed_ingress_with_source_security_group_id = [
+    {
+      rule                     = "http-80-tcp"
+      source_security_group_id = module.this_lb_http_sg.this_security_group_id
+    }
+  ]
+  number_of_computed_ingress_with_source_security_group_id = 1
+
+  tags = var.tags
 }
 
 resource "aws_ecs_service" "this" {
-  name = format("%s-%s-%s", var.name, var.stage, random_string.ecs_service_this_name.result)
+  name = format("%s-%s", var.name, var.stage)
 
   cluster = data.aws_ecs_cluster.this.arn
 
@@ -37,7 +52,7 @@ resource "aws_ecs_service" "this" {
 
   network_configuration {
     assign_public_ip = var.ecs_assign_public_ip
-    security_groups  = var.ecs_security_group_ids
+    security_groups  = [module.this_ecs_http_sg.this_security_group_id]
     subnets          = var.ecs_assign_public_ip ? var.public_subnet_ids : var.private_subnet_ids
   }
 
