@@ -10,6 +10,19 @@ module "this_lb_http_sg" {
   tags = var.tags
 }
 
+resource "aws_security_group_rule" "https" {
+  count = var.lb_certificate_arn == "" ? 0 : 1
+
+  security_group_id = module.this_lb_http_sg.this_security_group_id
+
+  type              = "ingress"
+  description       = "HTTPS"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+}
+
 resource "aws_lb" "this" {
   name = format("%s-%s", var.name, var.stage)
 
